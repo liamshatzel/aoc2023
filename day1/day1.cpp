@@ -32,6 +32,7 @@ int parse_line(string line){
 
 }
 
+
 int is_number_word(string word){
     map<string, int> wm; 
 
