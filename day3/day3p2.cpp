@@ -10,7 +10,7 @@
 #include <cctype>
 using namespace std;
 
-class gearloc{
+class gear_obj{
     public:
         int x;
         int y;
@@ -22,7 +22,7 @@ class num_obj{
         int end_idx;
         int height;
         int val;
-        vector<gearloc>;
+        vector<gear_obj> gears;
 };
 
 vector<num_obj> find_num_runs(string line, int text_height){
@@ -70,16 +70,16 @@ vector<num_obj> find_num_runs(string line, int text_height){
     return num_list;
 }
 
-int is_part(string line, int index){
+int is_gear(string line, int index){
     if(line.length() > 0){
-        if(!isdigit(line[index]) && (line[index] != '.')){
+        if(line[index] == '*'){
             return 1;
         }
     }
     return 0;
 }
 
-int parse_nums(vector<num_obj> nums, vector<string> lines){
+vector<num_obj> parse_nums(vector<num_obj> nums, vector<string> lines){
     vector<num_obj> result;
     int total_sum = 0;
     for(num_obj num : nums){
@@ -112,18 +112,46 @@ int parse_nums(vector<num_obj> nums, vector<string> lines){
         }
 
         for(int i = start; i < end; i++){
-            if(is_part(cur_line, i) || is_part(top_line, i) || is_part(bot_line, i)){
+            if(is_gear(cur_line, i) || is_gear(top_line, i) || is_gear(bot_line, i)){
                 to_add = 1;
+                gear_obj gear;
+                gear.x = i;
+                gear.y = y;
+                if(is_gear(top_line, i))
+                    gear.y = y-1;
+                if(is_gear(bot_line, i))
+                    gear.y = y+1;
+                
+                num.gears.push_back(gear);
             }
         }
 
         if(to_add){
             result.push_back(num);
-            total_sum += num.val;
         }
     }
-    return total_sum;
+    return result;
 }
+
+int same_gear(gear_obj gear1, gear_obj gear2){
+    if(gear1.x == gear2.x && gear1.y == gear2.y){
+        return 1;
+    }
+    return 0;
+}
+
+int get_gear_ratio(num_obj num1, num_obj num2){
+    int gear_ratio = 0; 
+    for(gear_obj gear1 : num1.gears){
+        for(gear_obj gear2 : num2.gears){
+            if(same_gear(gear1, gear2)){
+                gear_ratio = num1.val * num2.val;
+            }
+        }
+    }
+    return gear_ratio;
+}
+
 
 int main() {
     string line;
@@ -146,6 +174,18 @@ int main() {
         }
     }
 
-    int res = parse_nums(num_runs, m);
-    cout << res << endl;
+    vector<num_obj> res = parse_nums(num_runs, m);
+
+    int total = 0;
+
+    for(int k = 0; k < res.size(); k++){
+        num_obj cur_obj = res[k];
+        for(int j = k + 1; j < res.size(); j++){
+            num_obj to_comp = res[j];
+            int gear_ratio = get_gear_ratio(cur_obj, to_comp);
+            total += gear_ratio;
+        }
+    }
+
+    cout << total << endl;
 }
