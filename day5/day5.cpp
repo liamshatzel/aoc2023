@@ -49,15 +49,6 @@ unsigned long long find_min_intervals(vector<interval> seed_intervals){
 }
 
 
-
-//unsigned long long to_dest(){
-//    if(seeds[i] <= cur_map.source + cur_map.range && seeds[i] >= cur_map.source){
-//        unsigned long long source_offset = seeds[i] - cur_map.source;
-//        unsigned long long dest = cur_map.dest + source_offset;
-//        seeds[i] = dest;
-//    }
-//}
-
 int main() {
     string line;
 
@@ -71,6 +62,7 @@ int main() {
     vector<range_block> range_map;
      
     //get seeds before
+    //TODO: Non seed intervals shouldnt be passed down
     int line_count = 0;
     int num_blocks = 0;
     while(getline(cin, line)){
@@ -79,9 +71,10 @@ int main() {
         string numbers = "";
 
         if(line == ""){
-            for(int i = 0; i < seed_intervals.size(); i++){
+            int k = seed_intervals.size();
+            cout << k << endl;
+            for(int i = 0; i < k; i++){
                 for(int j = 0; j < range_map.size(); j++){
-                    cout << "Checking " << i << endl;
                     range_block cur_map = range_map[j];
 
                     unsigned long long r_start = range_map[j].source;
@@ -91,15 +84,15 @@ int main() {
 
                     //  seed; | --- |
                     //  range     | --- |
-                    if(s_start <= r_start && s_end <= r_end){
+                    if(s_start < r_start && s_end <= r_end){
                         //starts out range ends in range
                         interval i_1;
                         i_1.start = r_start - s_start;
-                        i_1.end = s_start;
+                        i_1.end = r_start - 1;
                         seed_intervals[i] = i_1;
 
                         interval i_2;
-                        unsigned long long start_offset = s_start - r_start;
+                        unsigned long long start_offset = r_start - r_start;
                         unsigned long long end_offset = s_end - r_start;
                         unsigned long long i_2_start = cur_map.dest + start_offset;
                         unsigned long long i_2_end = cur_map.dest + end_offset;
@@ -116,7 +109,7 @@ int main() {
                         i_2.start = i_2_start;
                         i_2.end = i_2_end;
                         seed_intervals.push_back(i_2);
-                    }else if(s_start <= r_end && s_end >= r_end){
+                    }else if(s_start <= r_end && s_end > r_end){
                         //starts in range ends out     
                         interval i_1;
                         i_1.start = r_end;
@@ -125,7 +118,7 @@ int main() {
 
                         interval i_2;
                         unsigned long long start_offset = s_start - r_start;
-                        unsigned long long end_offset = (r_end - s_start) - r_start;
+                        unsigned long long end_offset = (r_end - s_start - 1) - r_start;
                         unsigned long long i_2_start = cur_map.dest + start_offset;
                         unsigned long long i_2_end = cur_map.dest + end_offset;
                         i_2.start = i_2_start;
@@ -198,12 +191,18 @@ int main() {
 
     //
 
+    
+    for(interval seed : seed_intervals) {
+        cout << seed.start << " " << endl;
+    }
     //cout << find_min(seeds) << endl;
-    cout << find_min_intervals(seed_intervals) << endl;
+    //cout << find_min_intervals(seed_intervals) << endl;
 
-    ///for(range_block test : range_map){
-    ///    cout << test.start << endl;
-    ///}
+    
+
+    //for(range_block test : range_map){
+    //    cout << test.start << endl;
+    //}
 
 
 }

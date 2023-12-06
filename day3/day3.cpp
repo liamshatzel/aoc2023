@@ -27,7 +27,7 @@ class num_obj{
 
 vector<num_obj> find_num_runs(string line, int text_height){
     int start = 0;
-    int end = 0;
+        int end = 0;
 
     string cur_num = "";
     vector<num_obj> num_list;
