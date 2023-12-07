@@ -45,17 +45,17 @@ int main() {
     card_vals['A'] = 13;
     card_vals['K'] = 12; 
     card_vals['Q'] = 11;
-    card_vals['J'] = 10;
-    card_vals['T'] = 9;
-    card_vals['9'] = 8;
-    card_vals['8'] = 7;
-    card_vals['7'] = 6;
-    card_vals['6'] = 5;
-    card_vals['5'] = 4;
-    card_vals['4'] = 3;
-    card_vals['3'] = 2;
-    card_vals['2'] = 1;
-    card_vals['1'] = 0;
+    card_vals['T'] = 10;
+    card_vals['9'] = 9;
+    card_vals['8'] = 8;
+    card_vals['7'] = 7;
+    card_vals['6'] = 6;
+    card_vals['5'] = 5;
+    card_vals['4'] = 4;
+    card_vals['3'] = 3;
+    card_vals['2'] = 2;
+    card_vals['1'] = 1;
+    card_vals['J'] = 0;
 
     string line;
     int num_lines = 0;
@@ -89,6 +89,20 @@ int main() {
             }else{
                 num_cards[cur_char] += 1;
             }
+        }
+        
+        if(num_cards.count('J') > 0){
+            cout << num_cards['J'] << endl;
+            char max;
+            int i_max = -1;
+            for(auto const& [key, val] : num_cards){
+                if(val > i_max && key != 'J'){
+                    max = key;
+                    i_max = val;
+                }
+            }
+            num_cards[max] += num_cards['J'];
+            num_cards['J'] = 0;
         }
 
 
