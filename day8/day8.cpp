@@ -71,19 +71,34 @@ int main() {
         }
         line_count++;
     }
-    int move_count = 0; 
-    string key = "AAA";
-    while(key != "ZZZ"){
-        for(int k = 0; k < moves.length(); k++){
-            move_count++;
-            if(moves[k] == 'R'){
-                key = adj[key].right;
-            }else{
-                key = adj[key].left;
+    //string key = "AAA";
+    vector<int> move_list;
+    for(auto const& [key, value] : adj){
+        int move_count = 0; 
+        if(key[2] == 'A'){
+            string next_key = key;
+            while(next_key[2] != 'Z'){
+                for(int k = 0; k < moves.length(); k++){
+                    if(moves[k] == 'R'){
+                        next_key = adj[next_key].right;
+                    }else{
+                        next_key = adj[next_key].left;
+                    }
+                    move_count++;
+                }
+                move_list.push_back(move_count);
             }
-            cout << key << endl;
+
+        }
+    }
+    
+    int max = move_list[0];
+    for(int i = 0; i < move_list.size(); i++){
+        //cout << move_list[i] << endl;
+        if(move_list[i] > max){
+            max = move_list[i];
         }
     }
 
-    cout << move_count << endl;
+    cout << max << endl;
 }
