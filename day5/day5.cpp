@@ -71,6 +71,7 @@ int main() {
         string numbers = "";
 
         if(line == ""){
+            vector<interval> temp_map;
             int k = seed_intervals.size();
             cout << k << endl;
             for(int i = 0; i < k; i++){
@@ -98,7 +99,7 @@ int main() {
                         unsigned long long i_2_end = cur_map.dest + end_offset;
                         i_2.start = i_2_start;
                         i_2.end = i_2_end;
-                        seed_intervals.push_back(i_2);
+                        temp_map.push_back(i_2);
                     }else if(s_start >= r_start && s_end <= r_end){
                         //fully inside range
                         interval i_2;
@@ -108,7 +109,7 @@ int main() {
                         unsigned long long i_2_end = cur_map.dest + end_offset;
                         i_2.start = i_2_start;
                         i_2.end = i_2_end;
-                        seed_intervals.push_back(i_2);
+                        temp_map.push_back(i_2);
                     }else if(s_start < r_end && s_end > r_end){
                         //starts in range ends out     
                         interval i_1;
@@ -123,12 +124,13 @@ int main() {
                         unsigned long long i_2_end = cur_map.dest + end_offset;
                         i_2.start = i_2_start;
                         i_2.end = i_2_end;
-                        seed_intervals.push_back(i_2);
+                        temp_map.push_back(i_2);
                     }
 
                 }
             }
-            range_map.clear();
+            seed_intervals = temp_map;
+            //range_map.clear();
         }
 
         //get seeds
