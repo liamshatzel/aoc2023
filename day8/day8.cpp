@@ -5,6 +5,7 @@
 #include <map>
 #include <sstream>
 #include <cctype>
+#include<numeric>
 using namespace std;
 
 class node_t{
@@ -71,11 +72,13 @@ int main() {
         }
         line_count++;
     }
+    int a_lines = 0;
     //string key = "AAA";
     vector<int> move_list;
     for(auto const& [key, value] : adj){
         int move_count = 0; 
         if(key[2] == 'A'){
+            a_lines++;
             string next_key = key;
             while(next_key[2] != 'Z'){
                 for(int k = 0; k < moves.length(); k++){
@@ -86,19 +89,21 @@ int main() {
                     }
                     move_count++;
                 }
-                move_list.push_back(move_count);
             }
-
+            move_list.push_back(move_count);
         }
     }
     
     int max = move_list[0];
-    for(int i = 0; i < move_list.size(); i++){
+
+    //need to calc LCM
+    unsigned long long t_lcm = move_list[0];
+    for(int i = 1; i < move_list.size(); i++){
         //cout << move_list[i] << endl;
+        t_lcm = std::lcm(t_lcm, move_list[i]);
         if(move_list[i] > max){
             max = move_list[i];
         }
     }
-
-    cout << max << endl;
+    cout << t_lcm << endl;
 }
