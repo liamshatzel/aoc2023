@@ -109,7 +109,7 @@ int main() {
                         i_2.start = i_2_start;
                         i_2.end = i_2_end;
                         seed_intervals.push_back(i_2);
-                    }else if(s_start <= r_end && s_end > r_end){
+                    }else if(s_start < r_end && s_end > r_end){
                         //starts in range ends out     
                         interval i_1;
                         i_1.start = r_end;
@@ -196,7 +196,7 @@ int main() {
         cout << seed.start << " " << endl;
     }
     //cout << find_min(seeds) << endl;
-    //cout << find_min_intervals(seed_intervals) << endl;
+    cout << find_min_intervals(seed_intervals) << endl;
 
     
 
